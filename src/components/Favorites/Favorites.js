@@ -1,24 +1,42 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './Favorites.css';
-
 
 class Favorites extends Component {
     state = {
-        title: 'Новый список',
-        movies: [
-            { imdbID: 'tt0068646', title: 'The Godfather', year: 1972 }
-        ]
+        title: 'Новый список'
     }
+
+    favoritesNameChangeHandler = (e) => {
+        e.preventDefault();
+        this.setState({ title: e.target.value });
+    }
+
+    deleteFavoriteClickHandler = (favorite) => {
+        this.props.deleteFavorite(favorite);
+    }
+
     render() { 
+        const { title } = this.state;
+        const { listId, favorites } = this.props;
         return (
             <div className="favorites">
-                <input value="Новый список" className="favorites__name" />
+                <input onChange={this.favoritesNameChangeHandler} value={title} className="favorites__name" disabled={listId} />
                 <ul className="favorites__list">
-                    {this.state.movies.map((item) => {
-                        return <li key={item.id}>{item.title} ({item.year})</li>;
+                    {favorites.map((favorite) => {
+                        return (
+                            <li className="favorites__item" key={favorite.imdbID}>
+                                <span>{favorite.Title} ({favorite.Year})</span>
+                                <button className="favorites__item_delete" onClick={() => this.deleteFavoriteClickHandler(favorite)}>X</button>
+                            </li>
+                        );
                     })}
                 </ul>
-                <button type="button" className="favorites__save">Сохранить список</button>
+                { listId ? (
+                    <Link to={`/list/${listId}`}>Перейти к списку</Link>
+                ) : (
+                    <button type="button" className="favorites__save" disabled={!this.props.favorites.length || !this.state.title.trim()} onClick={() => this.props.saveList(this.state.title)}>Сохранить список</button>
+                ) }
             </div>
         );
     }

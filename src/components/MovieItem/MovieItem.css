@@ -4,9 +4,17 @@
     display: flex;
 }
 
-.movie-item__poster {
+.movie-item__poster, .movie-item__no-poster {
     height: 150px;
     margin-right: 21px;
+}
+
+.movie-item__no-poster {
+    width: 100px;
+    background: #d3d3d3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .movie-item__title {
@@ -24,8 +32,13 @@
     transition: all 0.2s linear;
 }
 
-.movie-item__add-button:hover {
+.movie-item__add-button:hover:not(:disabled) {
     cursor: pointer;
     opacity: 0.9;
     transition: all 0.2s linear;
+}
+
+.movie-item__add-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

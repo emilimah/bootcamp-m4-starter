@@ -3,14 +3,31 @@ import './SearchBox.css';
 
 class SearchBox extends Component {
     state = {
-        searchLine: ''
+        searchLine: '',
+        currentSearchValue: '',
+        searchResult: []
     }
+
     searchLineChangeHandler = (e) => {
         this.setState({ searchLine: e.target.value });
     }
+
     searchBoxSubmitHandler = (e) => {
         e.preventDefault();
+        const getMovies = async () => {
+            const url = `http://www.omdbapi.com/?apikey=ae1f0875&s=${this.state.searchLine}`;
+            const response = await fetch(url).then(r => r.json());
+
+            this.setState({searchResult: await response.Search});
+            this.props.getSearchResult(this.state.searchResult);
+        }
+        
+        if (this.state.searchLine !== this.state.currentSearchValue) {
+            this.setState({ currentSearchValue: this.state.searchLine });
+            getMovies();
+        }
     }
+    
     render() {
         const { searchLine } = this.state;
 
