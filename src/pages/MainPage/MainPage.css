@@ -17,3 +17,22 @@
 .main-page__favorites {
     width: 35%;   
 }
+
+@media screen and (max-width: 650px) {
+    .main-page__content {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .main-page__main-section {
+        padding: 0;
+        width: 100%;
+        margin: 15px 0;
+        order: 2;
+    }
+
+    .main-page__favorites {
+        width: 100%;
+        order: 1;
+    }
+}

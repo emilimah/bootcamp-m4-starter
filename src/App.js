@@ -10,9 +10,11 @@ class App extends React.Component {
   state = {
     title: '',
     favorites: [],
-    id: ''
+    id: '',
+    screenWidth: window.innerWidth
   }
 
+  // отправка запроса для сохранения избранных фильмов и получение идентификатора списка
   getListData = async (title, favorites) => {
     this.setState({ title: title, favorites: favorites });
 
@@ -28,10 +30,23 @@ class App extends React.Component {
     this.setState({ id: await response.id });
   }
 
+  updateDimensions = () => {
+    this.setState({ screenWidth: window.innerWidth });
+  };
+
+  // отслеживание изменения ширины экрана
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
   render() {
     return (
       <div className="app">
-        <Route path="/" exact><MainPage saveList={this.getListData} listId={this.state.id} /></Route>
+        <Route path="/" exact><MainPage saveList={this.getListData} listId={this.state.id} screenWidth={this.state.screenWidth} /></Route>
         <Route path={`/list/${this.state.id}`} exact><ListPage listData={this.state} /></Route>
       </div>
     );

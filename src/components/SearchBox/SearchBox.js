@@ -8,10 +8,14 @@ class SearchBox extends Component {
         searchResult: []
     }
 
+    // при вводе в поле ввода поиска меняется значение в state
     searchLineChangeHandler = (e) => {
         this.setState({ searchLine: e.target.value });
     }
 
+    // при нажатии на пнопку Искать или Enter (при фокусе на поле ввода) идет запрос на сервер
+    // и приходит ответ в виде массива объектов, который в дальнейшем передается в компонент
+    // Movies и отображается в нем в ввиде списка фильмов
     searchBoxSubmitHandler = (e) => {
         e.preventDefault();
         const getMovies = async () => {

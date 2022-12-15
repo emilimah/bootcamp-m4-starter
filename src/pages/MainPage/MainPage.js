@@ -8,13 +8,17 @@ import Favorites from '../../components/Favorites/Favorites';
 class MainPage extends Component {
     state = {
         searchResult: [],
-        favorites: []
+        favorites: [],
+        screenWidth: window.innerWidth,
+        favoritesVisible: false
     }
 
+    // обновление результата поиска в state
     getSearchResult = (result) => {
         this.setState({ searchResult: result ? result : [] });
     }
 
+    // добавление фильма в массив favorites объекта state при условии, что его фильма в списке
     setFavorites = (favorite) => {
         const { favorites } = this.state;
         const { imdbID, Title, Year } = favorite;
@@ -23,6 +27,7 @@ class MainPage extends Component {
         }
     }
 
+    // удаление фильма из списка избранных
     deleteFavorite = (favorite) => {
         this.setState(({favorites}) => {
             const index = favorites.findIndex(element => element.imdbID === favorite.imdbID),
@@ -34,11 +39,18 @@ class MainPage extends Component {
             }
         })
     }
+
+    // * мобильная версия *
+    // отображение/скрытия блока со списком избранных
+    favSwitcher = () => {
+        this.setState({ favoritesVisible: !this.state.favoritesVisible })
+    }
     
     render() { 
+        const { screenWidth } = this.props;
         return (
             <div className="main-page">
-                <Header />
+                <Header screenWidth={screenWidth} favSwitcher={this.favSwitcher} />
                 <main className="main-page__content">
                     <section className="main-page__main-section">
                         <div className="main-page__search-box">
@@ -48,9 +60,11 @@ class MainPage extends Component {
                             <Movies searchResult={this.state.searchResult} getFavorite={this.setFavorites} />
                         </div>
                     </section>
-                    <aside className="main-page__favorites">
-                        <Favorites favorites={this.state.favorites} deleteFavorite={this.deleteFavorite} saveList={(title) => this.props.saveList(title, this.state.favorites)} listId={this.props.listId} />
-                    </aside>
+                    { (screenWidth >= 650 || (screenWidth < 650 && this.state.favoritesVisible)) && 
+                        <aside className="main-page__favorites">
+                            <Favorites favorites={this.state.favorites} deleteFavorite={this.deleteFavorite} saveList={(title) => this.props.saveList(title, this.state.favorites)} listId={this.props.listId} />
+                        </aside> 
+                    }
                 </main>
             </div>
         );

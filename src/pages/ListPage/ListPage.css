@@ -10,3 +10,17 @@
 .list-page ul li {
     font-size: 18px;
 }
+
+.list-page ul li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 650px) {
+    .list-page {
+        padding: 10px;
+    }
+
+    .list-page__title {
+        text-align: center;
+    }
+}

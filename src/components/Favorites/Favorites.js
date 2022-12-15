@@ -7,11 +7,13 @@ class Favorites extends Component {
         title: 'Новый список'
     }
 
+    // при вводе в поле ввода названия списка обновляется значение в state 
     favoritesNameChangeHandler = (e) => {
         e.preventDefault();
         this.setState({ title: e.target.value });
     }
 
+    // удаление избранного фильма из списка
     deleteFavoriteClickHandler = (favorite) => {
         this.props.deleteFavorite(favorite);
     }
